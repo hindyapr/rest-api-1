@@ -1,0 +1,29 @@
+{
+  "name": "rest-api-1",
+  "version": "1.0.0",
+  "description": "Route | HTTP | Header(s) | Body | Description | ------|------|-----------|------|-------------| /api/hello?name={name} | GET | none | none | Print hello, {name} !| /api/users | GET | none | none | Get all the users info (Admin only)| /api/users | POST | none | name:string (Required), password:string (Required), email:string (Required), role:string (Required) | Create a user (Admin only)| /api/users/:id | GET | none | none | Get a single user (Admin and Authenticated user only)| /api/users/:id | PUT | none | name:string (Required), password:string (Required), email:string (Required), role:string (Required)  | Update a user with a new info (Admin and Authenticated user only)| /api/users/:id | DELETE | none | none | Delete a single user (Admin only)| /api/signup | DELETE | none | name:string (Required), password:string (Required), email:string (Required), role:string (Required)  | Sign Up with new user info | /api/signin | DELETE | none | none | Sign in and get an access token based on credentials |",
+  "main": "index.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^7.10.0",
+    "sequelize": "^5.7.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hindyapr/rest-api-1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hindyapr/rest-api-1/issues"
+  },
+  "homepage": "https://github.com/hindyapr/rest-api-1#readme"
+}
