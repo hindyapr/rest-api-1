@@ -1,4 +1,6 @@
 const { User } = require('../models');
+const { decode } = require('../helpers/bcrypt')
+const { sign } = require('../helpers/jwt');
 
 class userController {
     static create(req, res) {
@@ -20,12 +22,57 @@ class userController {
             })
     }
 
+    static login(req, res) {
+        User
+            .findOne({
+                where: {
+                    email: req.body.email
+                }
+            })
+            .then(user => {
+                if (user) {
+                    const isPasswordCorrect = decode(req.body.password, user.password);
+
+                    if (isPasswordCorrect) {
+                        const token = sign({
+                            userId: user.id,
+                            email: user.email
+                        });
+
+                        res
+                            .status(201)
+                            .json({ token });
+                    } else {
+                        res
+                            .status(400)
+                            .json({ msg: 'Invalid username/password' })
+                    }
+                } else {
+                    res
+                        .status(400)
+                        .json({ msg: 'Invalid username/password' })
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res
+                    .status(500)
+                    .json({ msg: 'internal server error' })
+            })
+    }
+
     static read(req, res) {
         User
             .findAll({})
             .then(users => {
-                res
-                    .json(users);
+                if (users) {
+                    res
+                        .json(users);
+                } else {
+                    res
+                        .status(404)
+                        .json(users);
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -39,8 +86,14 @@ class userController {
         User
             .findByPk(req.params.id)
             .then(user => {
-                res
-                    .json(user);
+                if (user) {
+                    res
+                        .json(user);
+                } else {
+                    res
+                        .status(404)
+                        .json(users);
+                }
             })
             .catch(err => {
                 console.log(err);
@@ -60,9 +113,14 @@ class userController {
                     id: req.params.id
                 }
             })
-            .then(data => {
-                res
-                    .json(data);
+            .then(success => {
+                if (success) {
+                    res.json({ msg: "data berhasil diupdate" })
+                } else {
+                    res
+                        .status(404)
+                        .json({ msg: "data tidak ditemukan" })
+                }
             })
             .catch(err => {
                 res
@@ -78,8 +136,14 @@ class userController {
                     id: req.params.id
                 }
             })
-            .then(user => {
-                res.json(user);
+            .then(success => {
+                if (success) {
+                    res.json({ msg: "data berhasil dihapus" })
+                } else {
+                    res
+                        .status(404)
+                        .json({ msg: "data tidak ditemukan" })
+                }
             })
             .catch(err => {
                 console.log(err);
