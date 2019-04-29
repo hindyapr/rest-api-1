@@ -1,5 +1,7 @@
 # rest-api
 
+Heroku URL: `https://desolate-basin-95952.herokuapp.com`
+
 Route | HTTP | Header(s) | Body | Description |
 ------|------|-----------|------|-------------|
 /api/todos | GET | token:string | none | Get all the user's todos (Authenticated user only)|
@@ -9,3 +11,4 @@ Route | HTTP | Header(s) | Body | Description |
 /api/todos/:id | DELETE | token:string | none | Delete a single todo (Owners only)|
 /api/signup | POST | none | email:string, password:string  | Sign Up with new user info |
 /api/signin | POST | none | email:string, password:string | Sign in and get an access token based on credentials |
+
