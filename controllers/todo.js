@@ -14,7 +14,7 @@ class todoController {
                     .json(todo);
             })
             .catch(err => {
-                // console.log(err);
+                next(err);
                 res
                     .status(500)
                     .json({ msg: 'internal server error' })
@@ -22,7 +22,6 @@ class todoController {
     }
 
     static read(req, res) {
-        console.log('masuk')
         Todo
             .findAll({
                 where: {
@@ -41,14 +40,11 @@ class todoController {
             })
             .catch(err => {
                 // console.log(err);
-                res
-                    .status(500)
-                    .json({ msg: 'internal server error' })
+                next(err);
             })
     }
 
     static readById(req, res, next) {
-        console.log('masuk')
         Todo
             .findByPk(req.params.id)
             .then(todo => {
@@ -56,17 +52,12 @@ class todoController {
                     res
                         .json(todo);
                 } else {
-                    res
-                        .status(404)
-                        .json(todo);
+
+                    throw 'Not found'
                 }
             })
             .catch(err => {
-                // console.log(err, '<<<<<<< controll');
                 next(err);
-                // res
-                //     .status(500)
-                //     .json({ msg: 'internal server error' })
             })
     }
 
@@ -90,6 +81,34 @@ class todoController {
                 }
             })
             .catch(err => {
+                next(err)
+                res
+                    .status(500)
+                    .json(err);
+            })
+    }
+
+    static updateOneKeyById(req, res) {
+        let obj = {}
+        obj[req.body.key] = req.body.value
+
+        Todo
+            .update(obj, {
+                where: {
+                    id: req.params.id
+                }
+            })
+            .then(success => {
+                if (success) {
+                    res.json({ msg: "data berhasil diupdate" })
+                } else {
+                    res
+                        .status(404)
+                        .json({ msg: "data tidak ditemukan" })
+                }
+            })
+            .catch(err => {
+                next(err)
                 res
                     .status(500)
                     .json(err);

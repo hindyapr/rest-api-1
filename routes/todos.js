@@ -9,10 +9,10 @@ router.use(authentic);
 router.post('/', todoControll.create);
 router.get('/', todoControll.read);
 
-// router.use(authorize);
 
 router.get('/:id', authorize, todoControll.readById);
 router.put('/:id', authorize, todoControll.updateById);
+router.patch('/:id', authorize, todoControll.updateOneKeyById);
 router.delete('/:id', authorize, todoControll.delete);
 
 
